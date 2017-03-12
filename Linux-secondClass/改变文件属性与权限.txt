@@ -1,0 +1,55 @@
+如何改变文件属性与权限
+
+①：chgrp：改变文件所属用户组
+chgrp（change group）可以用来改变文件所属的用户组，不过，要被改变的组名必须在/etc/group 文件内存中才行，否则就会显示错误。
+
+格式：[user@localhost ~] $ chgrp [ -R ] dirname/filename ...
+选项与参数：
+-R：进行递归（recursive）的持续更改，也即连同子目录下的所有文件、目录都更新成为这个用户组之意。常常用在更改某一目录内的所
+有的文件。
+	
+
+②：chown：改变文件所有者
+chown（change owner），要注意的是要改变的用户必须已经存在于系统中的账号，也就是/etc/pasword 这个文件中有记录的用户名称。
+chown的用途还挺多的，它还可以顺便直接修改用户组的名称。此外，如果要连目录下的所有子目录或文件都同时更改文件所有者的话，
+直接加上 -R 的参数即可。
+格式：[user@localhost ~] $ chown [ -R ] 账号名称  文件或目录
+      [user@localhost ~] $ chown [ -R ] 账号名称：组名  文件或目录
+参数：
+-R：进行递归（recursive）的持续更改，即连同子目录下的所有文件都要更改
+
+注：事实上chown也可以使用“chown user.group file”，即在所有者与用户组间加上小数点“.”也行。不过很多人在设置账号时，喜欢
+在账号中加入小数点，这就会造成系统的误判。所以我们一般建议使用冒号“:”来隔开所有者与用户组。此外，chown也能单纯地修改所
+属用户组。例如“ chown .sshd install.log ”就是修改用户组，就是那个小数点的作用。
+
+
+③：chmod：改变文件的权限
+文件权限的改变使用的是chmod这个命令，但是权限的设置方法有两种，分别可以使用数字或者是符号来进行权限的更改。
+
+数字类型改变文件权限：
+Linux文件的基本权限是9个，分别是owner、group、others三种身份各有自己的read、write、execute权限。
+权限的分数对照：
+r：4，w：2，x：1.
+每种身份各自的三个权限分数是需要累加的
+格式： [user@localost ~] $ chmod [ -R ] xyz 文件或目录
+参数：
+xyz：是数字类型的权限属性，分别为rwx属性数值的相加；
+-R ：进行递归的持续更改，即连同子目录下的所有文件都会更改。
+
+符号类型改变文件权限：
+我们可以通过u，g，o来代表user，group，owner三种身份的权限。此外a代表all，即全部的身份。
+
+格式：
+设置权限：[user@localost ~] $ chmod u=rwx,go=rx .bashrc
+增加权限：[user@localost ~] $ chmod a+w .bashrc
+减少权限：[user@localost ~] $ chmod a-x .bashrc
+
+注：在+与-的状态下，只要是没有指定到的选项，则该权限不会被变动。
+
+
+
+
+
+
+
+
